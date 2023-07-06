@@ -14,6 +14,10 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  REGISTRY: ghcr.io
+  DOCKER_IMAGE_NAME: ${{ env.REGISTRY }}/${{ github.repository }}
+
 jobs:
   build:
 
@@ -27,6 +31,13 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+    - name: Log in to the Container registry
+      uses: docker/login-action
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
