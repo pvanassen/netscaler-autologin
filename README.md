@@ -6,7 +6,8 @@ A simple reverse-proxy which forwards GET requests to a server behind a NetScale
 
 ## Example use: maven
 
-Start a docker(compose) with the `NETSCALER_AUTOLOGIN_URL` set to the server to forward requests to
+Start a docker(compose) with the `NETSCALER_AUTOLOGIN_URL` environment variable set to the server to forward requests to 
+and `NETSCALER_KEEPALIVE_PATH` to a path that will return `302` when logged out. 
 
 ```yaml
 version: "3.6"
@@ -17,6 +18,7 @@ services:
       - "12345:8080/tcp"
     environment:
       - NETSCALER_AUTOLOGIN_URL=https://nexus-behind-netscaler.local
+      - NETSCALER_KEEPALIVE_PATH=/does-not-redirect
     restart: "unless-stopped"
 ```
 
