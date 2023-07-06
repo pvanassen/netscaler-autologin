@@ -28,6 +28,8 @@
         <start-class>nl.pvanassen.MainKt</start-class>
         <jib.maven.plugin.version>3.3.2</jib.maven.plugin.version>
         <resilience4jVersion>2.0.0</resilience4jVersion>
+        <docker-maven-plugin.version>0.42.1</docker-maven-plugin.version>
+        <dockerImageName>netscaler-autologin:${project.version}</dockerImageName>
     </properties>
 
     <repositories>
@@ -109,12 +111,6 @@
                         <goals>
                             <goal>compile</goal>
                         </goals>
-                        <configuration>
-                            <sourceDirs>
-                                <source>src/main/kotlin</source>
-                                <source>target/generated-sources/annotations</source>
-                            </sourceDirs>
-                        </configuration>
                     </execution>
                     <execution>
                         <id>test-compile</id>
@@ -133,31 +129,79 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             <plugin>
-                <groupId>com.google.cloud.tools</groupId>
-                <artifactId>jib-maven-plugin</artifactId>
-                <version>${jib.maven.plugin.version}</version>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${docker-maven-plugin.version}</version>
+                <configuration>
+                    <images>
+                        <image>
+                            <name>${dockerImageName}</name>
+                            <build>
+                                <from>eclipse-temurin:17-jre</from>
+                                <assembly>
+                                    <descriptorRef>artifact</descriptorRef>
+                                </assembly>
+                                <cmd>java -jar maven/${project.name}-${project.version}.jar</cmd>
+                                <ports>
+                                    <port>8080</port>
+                                </ports>
+                                <buildx>
+                                    <platforms>
+                                        <platform>linux/amd64,linux/arm64</platform>
+                                    </platforms>
+                                </buildx>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
                 <executions>
                     <execution>
-                        <phase>package</phase>
+                        <id>docker:build</id>
                         <goals>
-                            <goal>dockerBuild</goal>
+                            <goal>build</goal>
                         </goals>
+                        <phase>install</phase>
                     </execution>
                 </executions>
-                <configuration>
-                    <from>
-                        <image>
-                            arm64v8/eclipse-temurin:17-jre-jammy
-                        </image>
-                    </from>
-                    <container>
-                        <user>999</user>
-                        <workingDirectory>/app/</workingDirectory>
-                    </container>
-                    <allowInsecureRegistries>true</allowInsecureRegistries>
-                </configuration>
             </plugin>
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <id>docker-image-name</id>
+            <activation>
+                <property>
+                    <name>env.DOCKER_IMAGE_NAME</name>
+                </property>
+            </activation>
+            <properties>
+                <dockerImageName>${env.DOCKER_IMAGE_NAME}</dockerImageName>
+            </properties>
+        </profile>
+        <profile>
+            <id>docker-push</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>${docker-maven-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>docker:push</id>
+                                <goals>
+                                    <goal>push</goal>
+                                </goals>
+                                <phase>install</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
