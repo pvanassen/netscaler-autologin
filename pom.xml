@@ -185,5 +185,29 @@
                 <dockerImageName>${env.DOCKER_IMAGE_NAME}</dockerImageName>
             </properties>
         </profile>
+        <profile>
+            <id>docker-push</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>${docker-maven-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>docker:push</id>
+                                <goals>
+                                    <goal>push</goal>
+                                </goals>
+                                <phase>install</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 </project>
