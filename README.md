@@ -1,4 +1,4 @@
-![maven](https://github.com/pvanassen/netscaler-autologin/actions/workflows/main.yml/badge.svg)
+![maven](https://github.com/pvanassen/netscaler-autologin/actions/workflows/maven.yml/badge.svg)
 
 # Netscaler autologin
 
