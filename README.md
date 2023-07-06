@@ -1,3 +1,5 @@
+![maven](https://github.com/pvanassen/netscaler-autologin/actions/workflows/main.yml/badge.svg)
+
 # Netscaler autologin
 
 A simple reverse-proxy which forwards GET requests to a server behind a NetScaler and handle the login for you. 
