@@ -58,7 +58,7 @@ class ForwardService(private val properties: NetscalerAutologinProperties, priva
             log.info("Keep alive $it")
             try {
                 val cookie = tokenCache.getCookieByToken(it)!!
-                val status = forwardGet(cookie, "/repository/maven-public").statusCode()
+                val status = forwardGet(cookie, properties.keepAlivePath).statusCode()
                 if (status == 302) {
                     log.info("Keep alive $it is expired")
                     tokenCache.remove(it)

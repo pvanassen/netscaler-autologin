@@ -10,7 +10,8 @@ open class Main {
 
     @Bean
     open fun getProps(environment: Environment) = NetscalerAutologinProperties(
-        environment.getProperty("NETSCALER_AUTOLOGIN_URL") ?: throw RuntimeException("NETSCALER_AUTOLOGIN_URL not set")
+        environment.getProperty("NETSCALER_AUTOLOGIN_URL") ?: throw RuntimeException("NETSCALER_AUTOLOGIN_URL not set"),
+        environment.getProperty("NETSCALER_KEEPALIVE_PATH") ?: throw RuntimeException("NETSCALER_KEEPALIVE_PATH not set")
     )
 }
 
