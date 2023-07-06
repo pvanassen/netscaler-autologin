@@ -29,7 +29,6 @@ services:
 
 Configure `settings.xml`, create a server with your username/password and either create a full mirror or define just your repositories as one would do normally
 ```xml
-
 <?xml version="1.0" encoding="UTF-8"?>
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
