@@ -15,6 +15,7 @@ on:
     branches: [ "main" ]
 
 env:
+  REGISTRY: ghcr.io
   DOCKER_IMAGE_NAME: ghcr.io/${{ github.repository }}
 
 jobs:
@@ -36,6 +37,13 @@ jobs:
         registry: ${{ env.REGISTRY }}
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Extract metadata (tags, labels) for Docker
+      id: meta
+      uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+      with:
+        images: |
+          ${{ env.DOCKER_IMAGE_NAME }}
 
     - name: Build with Maven
       run: mvn -B package --file pom.xml
