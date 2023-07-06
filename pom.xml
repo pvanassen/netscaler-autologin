@@ -28,6 +28,7 @@
         <start-class>nl.pvanassen.MainKt</start-class>
         <jib.maven.plugin.version>3.3.2</jib.maven.plugin.version>
         <resilience4jVersion>2.0.0</resilience4jVersion>
+        <docker-maven-plugin.version>0.42.1</docker-maven-plugin.version>
         <dockerImageName>netscaler-autologin:${project.version}</dockerImageName>
     </properties>
 
