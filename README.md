@@ -4,6 +4,11 @@
 
 A simple reverse-proxy which forwards GET requests to a server behind a NetScaler and handle the login for you. 
 
+## Docker image availability
+
+Image is available through GitHub packages (`ghcr.io/pvanassen/netscaler-autologin:latest`) for both `amd64` as well as 
+`arm64` architecture. 
+
 ## Example use: maven
 
 Start a docker(compose) with the `NETSCALER_AUTOLOGIN_URL` environment variable set to the server to forward requests to 
@@ -13,7 +18,7 @@ and `NETSCALER_KEEPALIVE_PATH` to a path that will return `302` when logged out.
 version: "3.6"
 services:
   netscaler-proxy:
-    image: "netscaler-proxy:1.0-SNAPSHOT"
+    image: "ghcr.io/pvanassen/netscaler-autologin:latest"
     ports:
       - "12345:8080/tcp"
     environment:
@@ -48,3 +53,4 @@ Configure `settings.xml`, create a server with your username/password and either
 ```
 
 All requests are now passed through the proxy which performs the login for you. 
+
