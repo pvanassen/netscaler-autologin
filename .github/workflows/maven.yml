@@ -15,8 +15,7 @@ on:
     branches: [ "main" ]
 
 env:
-  REGISTRY: ghcr.io
-  DOCKER_IMAGE_NAME: ${{ env.REGISTRY }}/${{ github.repository }}
+  DOCKER_IMAGE_NAME: ghcr.io/${{ github.repository }}
 
 jobs:
   build:
