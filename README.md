@@ -23,7 +23,7 @@ services:
       - "12345:8080/tcp"
     environment:
       - NETSCALER_AUTOLOGIN_URL=https://nexus-behind-netscaler.local
-      - NETSCALER_KEEPALIVE_PATH=/does-not-redirect
+      - NETSCALER_KEEPALIVE_PATH=/repository/maven-public
     restart: "unless-stopped"
 ```
 
